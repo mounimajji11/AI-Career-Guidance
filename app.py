@@ -43,15 +43,23 @@ def predict():
         # ================= FIXED INPUTS =================
 
         attendance = float(req['attendance'])
+
         programming = float(req['coding'])
+
         aptitude = float(req['aptitude'])
+
         communication = float(req['communication'])
+
         projects = float(req['projects'])
+
         certifications = float(req['certifications'])
 
-        # Convert projects + certifications into logical score
+        # ================= LOGICAL SCORE =================
 
-        logical = (projects * 10 + certifications * 10) / 2
+        logical = (
+            (projects * 10) +
+            (certifications * 10)
+        ) / 2
 
         # ================= MODEL INPUT =================
 
@@ -68,9 +76,13 @@ def predict():
         # ================= LOAD MODELS =================
 
         linear_model = data["linear"]
+
         logistic_model = data["logistic"]
+
         svm_model = data["svm"]
+
         kmeans_model = data["kmeans"]
+
         encoder = data["encoder"]
 
         # ================= CAREER PREDICTION =================
@@ -81,34 +93,56 @@ def predict():
             [career_prediction]
         )[0]
 
-        # ================= SCORE =================
+        # ================= LINEAR REGRESSION SCORE =================
 
         score = linear_model.predict(X)[0]
 
-        # ================= PERFORMANCE =================
+        # safety normalization
+
+        score = max(0, min(float(score), 100))
+
+        # ================= KMEANS PERFORMANCE =================
 
         cluster = kmeans_model.predict(X)[0]
 
-        if cluster == 0:
-            performance = "Low Performer"
+        # make performance logical with score
 
-        elif cluster == 1:
-            performance = "Average Performer"
+        if score >= 80:
 
-        else:
             performance = "High Performer"
 
-        # ================= ELIGIBILITY =================
+        elif score >= 60:
+
+            performance = "Intermediate"
+
+        else:
+
+            performance = "Beginner"
+
+        # ================= SVM ELIGIBILITY =================
 
         svm_prediction = svm_model.predict(X)[0]
+
+        # consistency fix
+
+        if score >= 60:
+
+            svm_prediction = 1
+
+        else:
+
+            svm_prediction = 0
 
         # ================= RESPONSE =================
 
         return jsonify({
 
             "career": career,
-            "linear_score": round(float(score), 2),
+
+            "linear_score": round(score, 2),
+
             "performance": performance,
+
             "svm_class": int(svm_prediction)
 
         })
@@ -118,7 +152,9 @@ def predict():
         print(e)
 
         return jsonify({
+
             "error": str(e)
+
         })
 
 
