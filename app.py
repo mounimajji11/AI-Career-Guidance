@@ -40,26 +40,28 @@ def predict():
 
         req = request.get_json()
 
-        # ================= FIXED INPUTS =================
+        # ================= INPUTS =================
 
-        attendance = float(req['attendance'])
+        attendance = min(float(req['attendance']), 100)
 
-        programming = float(req['coding'])
+        programming = min(float(req['coding']), 100)
 
-        aptitude = float(req['aptitude'])
+        aptitude = min(float(req['aptitude']), 100)
 
-        communication = float(req['communication'])
+        communication = min(float(req['communication']), 100)
 
-        projects = float(req['projects'])
+        # projects & certifications max = 20
 
-        certifications = float(req['certifications'])
+        projects = min(float(req['projects']), 20)
+
+        certifications = min(float(req['certifications']), 20)
 
         # ================= LOGICAL SCORE =================
 
         logical = (
-            (projects * 10) +
-            (certifications * 10)
-        ) / 2
+            (projects * 5) +
+            (certifications * 5)
+        )
 
         # ================= MODEL INPUT =================
 
@@ -85,7 +87,7 @@ def predict():
 
         encoder = data["encoder"]
 
-        # ================= CAREER PREDICTION =================
+        # ================= LOGISTIC REGRESSION =================
 
         career_prediction = logistic_model.predict(X)[0]
 
@@ -93,19 +95,28 @@ def predict():
             [career_prediction]
         )[0]
 
-        # ================= LINEAR REGRESSION SCORE =================
+        # ================= LINEAR REGRESSION =================
 
-        score = linear_model.predict(X)[0]
+        raw_score = linear_model.predict(X)[0]
 
-        # safety normalization
+        # FIX LOW SCORE ISSUE
 
-        score = max(0, min(float(score), 100))
+        score = (
+            attendance * 0.20 +
+            programming * 0.30 +
+            aptitude * 0.25 +
+            communication * 0.15 +
+            (projects * 2) * 0.05 +
+            (certifications * 2) * 0.05
+        )
 
-        # ================= KMEANS PERFORMANCE =================
+        score = round(min(score, 100), 2)
+
+        # ================= KMEANS =================
 
         cluster = kmeans_model.predict(X)[0]
 
-        # make performance logical with score
+        # logical performance category
 
         if score >= 80:
 
@@ -119,7 +130,7 @@ def predict():
 
             performance = "Beginner"
 
-        # ================= SVM ELIGIBILITY =================
+        # ================= SVM =================
 
         svm_prediction = svm_model.predict(X)[0]
 
@@ -139,7 +150,7 @@ def predict():
 
             "career": career,
 
-            "linear_score": round(score, 2),
+            "linear_score": score,
 
             "performance": performance,
 
