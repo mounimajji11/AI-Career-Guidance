@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>AI Career Guidance</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- ================= GET STARTED PAGE ================= -->
+
+<section class="page hero-page" id="heroPage">
+
+    <div class="hero-content">
+
+        <i class="fa-solid fa-graduation-cap hero-icon"></i>
+
+        <h1>AI Career Guidance</h1>
+
+        <p>
+            Discover the best career path using AI-powered student analysis.
+        </p>
+
+        <button onclick="openLogin()">
+
+            Get Started
+
+        </button>
+
+    </div>
+
+</section>
+
+<!-- ================= LOGIN PAGE ================= -->
+
+<section class="page hidden auth-page"
+id="loginPage">
+
+    <div class="auth-card">
+
+        <i class="fa-solid fa-user-graduate auth-icon"></i>
+
+        <h2>Student Login</h2>
+
+        <input type="email"
+        placeholder="Enter Email">
+
+        <input type="password"
+        placeholder="Enter Password">
+
+        <!-- ✅ FIXED -->
+        <button type="button" onclick="openDashboard(event)">
+            Login
+        </button>
+
+        <p>
+
+            New User?
+
+            <span onclick="openRegister()">
+
+                Register Here
+
+            </span>
+
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ================= REGISTER PAGE ================= -->
+
+<section class="page hidden auth-page"
+id="registerPage">
+
+    <div class="auth-card">
+
+        <i class="fa-solid fa-user-plus auth-icon"></i>
+
+        <h2>Create Account</h2>
+
+        <input type="text"
+        placeholder="Full Name">
+
+        <input type="email"
+        placeholder="Email">
+
+        <input type="password"
+        placeholder="Password">
+
+        <!-- ✅ FIXED (THIS WAS THE MAIN BUG) -->
+        <button type="button" onclick="registerUser(event)">
+            Register
+        </button>
+
+        <p>
+
+            Already have account?
+
+            <span onclick="openLogin()">
+
+                Login
+
+            </span>
+
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ================= DASHBOARD PAGE ================= -->
+
+<section class="page hidden dashboard-page"
+id="dashboardPage">
+
+    <div class="sidebar">
+
+        <h2>
+
+            <i class="fa-solid fa-robot"></i>
+
+            AI Career
+
+        </h2>
+
+        <ul>
+
+            <li>
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </li>
+
+            <li>
+                <i class="fa-solid fa-chart-line"></i>
+                Prediction
+            </li>
+
+            <li>
+                <i class="fa-solid fa-user"></i>
+                Profile
+            </li>
+
+        </ul>
+
+    </div>
+
+    <div class="main-content">
+
+        <div class="topbar">
+
+            <h1>Student Career Dashboard</h1>
+
+        </div>
+
+        <div class="form-card">
+
+            <h2>Student Analysis Form</h2>
+
+            <div class="vertical-form">
+
+                <div class="input-box">
+                    <label>Attendance %</label>
+                    <input type="number" id="attendance">
+                </div>
+
+                <div class="input-box">
+                    <label>Coding Score</label>
+                    <input type="number" id="coding">
+                </div>
+
+                <div class="input-box">
+                    <label>Aptitude Score</label>
+                    <input type="number" id="aptitude">
+                </div>
+
+                <div class="input-box">
+                    <label>Communication Skills</label>
+                    <input type="number" id="communication">
+                </div>
+
+                <div class="input-box">
+                    <label>Projects</label>
+                    <input type="number" id="projects">
+                </div>
+
+                <div class="input-box">
+                    <label>Certifications</label>
+                    <input type="number" id="certifications">
+                </div>
+
+            </div>
+
+            <button class="predict-btn"
+            onclick="showResultPage()">
+
+                Predict Career
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= RESULT PAGE ================= -->
+
+<section class="page hidden result-page"
+id="resultPage">
+
+    <div class="result-container">
+
+        <h1>
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            Prediction Results
+
+        </h1>
+
+        <div class="result-grid">
+
+            <div class="result-card">
+
+                <i class="fa-solid fa-chart-simple"></i>
+
+                <h3>Performance Score</h3>
+
+                <p id="score">0</p>
+
+            </div>
+
+            <div class="result-card">
+
+                <i class="fa-solid fa-user-check"></i>
+
+                <h3>Placement Status</h3>
+
+                <p id="placement">
+
+                    Eligible
+
+                </p>
+
+            </div>
+
+            <div class="result-card">
+
+                <i class="fa-solid fa-laptop-code"></i>
+
+                <h3>Career Recommendation</h3>
+
+                <p id="career">
+
+                    Software Developer
+
+                </p>
+
+            </div>
+
+            <div class="result-card">
+
+                <i class="fa-solid fa-award"></i>
+
+                <h3>Skill Category</h3>
+
+                <p id="skill">
+
+                    Intermediate
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <button class="back-btn"
+        onclick="backDashboard()">
+
+            Back To Dashboard
+
+        </button>
+
+    </div>
+
+</section>
+
+<script src="/script.js"></script>
+
+</body>
+</html>
